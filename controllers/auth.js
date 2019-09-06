@@ -54,7 +54,7 @@ exports.adminLogin =(req, res, next) => {
         throw error;
       }
       user = result.dataValues;
-      return bcrypt.compare(password, user.password); 
+      return bcrypt.compare(password, user.password);
     })
     .then(isSame => {
       if(!isSame) {
@@ -159,7 +159,7 @@ exports.userLogin =(req, res, next) => {
         throw error;
       }
       user = result.dataValues;
-      return bcrypt.compare(password, user.password); 
+      return bcrypt.compare(password, user.password);
     })
     .then(isSame => {
       if(!isSame) {
@@ -168,10 +168,10 @@ exports.userLogin =(req, res, next) => {
         throw error;
       }
       const token = jwt.sign({
-        userEmail: user.email, 
+        userEmail: user.email,
         UserId: user.id,
       }, process.env.jwt_secret,{expiresIn: '1h'});
-      res.status(200).json({token: token, userId: user.id, firstname: user.firstname, lastname: user.lastname, middlename: user.middlename, email: user.email, username: user.username})
+      res.status(200).json({token: token, userId: user.id, firstname: user.firstname, lastname: user.lastname, middlename: user.middlename, email: user.email, username: user.username, isActive: user.isActive})
     })
     .catch(err => {
       if(!err.statusCode) { err.statusCode = 500 };
