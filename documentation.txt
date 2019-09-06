@@ -1,0 +1,206 @@
+we have 4 models
+1: account
+2: admin
+3: transaction
+4: user
+
+User is link to Account
+When users are created an account is created for that user as well using the same form
+one Account is linked to one User (for now)
+a User Account can contain multiple Transactions (linked to that account and as such one particular user)
+
+
+Admin API's
+create Admin
+test api: https://bank-software-test.herokuapp.com/admin/register
+method: POST, dataType: json or formData
+requirement: only valid loggedin admin can access this route (must have a valid token in the Authorization Header)
+{
+	"email": string unique,
+	"username": string,
+	"password": string
+}
+return value {
+    msg: string
+    userId: Id of newly created user
+}
+
+
+Admin login
+test api: https://bank-software-test.herokuapp.com/admin/login
+method:POST, dataType: json or formData
+{
+	"email": string unique,
+	"password": string
+}
+return value
+{
+    token: string (jwt token), 
+    adminId: Id of loggin in admin, 
+    email: email of loggedin admin, 
+    username:username of loggedin admin, 
+    isAdmin: true
+}
+
+Delete Admin
+test api: https://bank-software-test.herokuapp.com/admin/:adminId
+requirement: only valid loggedin admin can access this route (must have a valid token in the Authorization Header)
+method:DELETE, dataType: null (admin ID should be in the req.params)
+return value
+{
+    msg: string
+}
+
+Get all Admins
+test api: https://bank-software-test.herokuapp.com/admins
+requirement: only valid loggedin admin can access this route (must have a valid token in the Authorization Header)
+method:GET
+return value
+{
+    [{
+        id: string,
+        username: string,
+        email: string,
+        createdAt: date
+        } * n]
+}
+
+User / Account / Transaction API's
+Create User
+test api: https://bank-software-test.herokuapp.com/user/register
+{
+	"email": string and unique,
+	"firstname": string,
+	"middlename": sting,
+	"lastname": string,
+	"password": string,
+	"phoneNumber": string,
+	"ssn": string,
+	"dateOfBirth": date or string,
+	"address": string,
+	"state": string,
+	"country": string",
+	"createdAt": string default to date.now(),
+	"accountNumber": Integer,
+	"accountType": string,
+	"accountBalance": Integer or Float defaults to 0,
+	"accountManagerName": string,
+	"accountManagerEmail": string,
+	"accountManagerTel": string
+}
+
+Login User
+test api: https://bank-software-test.herokuapp.com/user/login
+method:POST, dataType: json or formData
+{
+	"email": string unique,
+	"password": string
+}
+return value
+{
+    token: string (jwt token), 
+   userId: Id of loggin in user,
+   "firstname": string,
+    "lastname": string,
+    "middlename": string,
+    email: email of loggedin admin
+}
+
+
+Get ALL Users
+test api: https://bank-software-test.herokuapp.com/account/users
+requirement: only valid loggedin admin can access this route (must have a valid token in the Authorization Header)
+method:GET
+return value
+{
+    [
+    {
+        "id": Id of loggedIn user,
+        "email": string,
+        "firstname": string,
+        "middlename": string,
+        "lastname": string,
+        "phoneNumber": string,
+        "ssn": string,
+        "dateOfBirth": date string,
+        "address": string,
+        "state": string,
+        "country": string,
+        "createdAt": date string
+    } * n
+]
+}
+
+Get ONE Users
+test api: https://bank-software-test.herokuapp.com/account/:userId
+requirement: only valid loggedin admin can access this route (must have a valid token in the Authorization Header)
+method:GET, dataType: null (user ID should be in the req.params)
+return value
+{
+    accountdetails": {
+        "id": Id of returned user,
+        "accountNumber": Integer,
+        "accountType": string,
+        "accountBalance": integer,
+        "accountManagerName": string,
+        "accountManagerEmail": string,
+        "accountManagerTel": string,
+        "email": string,
+        "firstname": stirng,
+        "middlename": string,
+        "lastname": "doe"string,
+        "phoneNumber": string,
+        "ssn": string,
+        "dateOfBirth": date,
+        "address": string,
+        "state": "dreamville"string,
+        "country": string,
+        "createdAt": date
+    },
+    "transactions": [{
+        "id": transaction Id,
+            "refID": string (unique),
+            "amount": integer,
+            "otherParty": string,
+            "details": string,
+            "transactionType": string,
+            "transactionMethod": string,
+            "status": string,
+            "createdAt": string,
+    } * n]
+}
+
+Delete User
+test api: https://bank-software-test.herokuapp.com/account/:userId
+requirement: only valid loggedin admin can access this route (must have a valid token in the Authorization Header)
+method:DELETE, dataType: null (admin ID should be in the req.params)
+return value
+{
+    msg: string
+}
+
+CreateTransaction 
+test api: https://bank-software-test.herokuapp.com/account/transaction
+method:POST, dataType: json or formData
+requirement: only valid loggedin admin can access this route (must have a valid token in the Authorization Header)
+{
+	"amount": interger or float,
+	"otherParty": string (sender or reciever),
+	"details": string,
+	"transactionType": string (can only be either credit or debit, no other string is allowed),
+	"transactionMethod": string,
+	"status": string (can only be either sucessful or pending or failed, no other string is allowed),
+	"accountId": string or interger (the id of the account the transaction is being carried on),
+	"date": date or string 
+}
+return Value 
+{
+    "id": Id for the transaction,
+    "accountNumber": integer (account number the transaction was carried on),
+    "accountType": string,
+    "accountBalance": integer,
+    "accountManagerName": string,
+    "accountManagerEmail": string,
+    "accountManagerTel": string,
+    "userId": Id for the user of the account the transaction was carried on
+}
