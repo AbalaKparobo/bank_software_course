@@ -170,7 +170,7 @@ exports.userLogin =(req, res, next) => {
       const token = jwt.sign({
         userEmail: user.email,
         UserId: user.id,
-      }, process.env.jwt_secret,{expiresIn: '1h'});
+      }, process.env.jwt_secret,{expiresIn: 1800});
       res.status(200).json({token: token, userId: user.id, firstname: user.firstname, lastname: user.lastname, middlename: user.middlename, email: user.email, username: user.username, isActive: user.isActive})
     })
     .catch(err => {
