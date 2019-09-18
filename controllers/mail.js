@@ -52,6 +52,7 @@ exports.sendMail = (req, res, next) => {
     })
     .then( () => {
         mailer.setApiKey(sendGrid_api_key);
+        const date = new Date();
         const msg = {
             to: email,
             from: 'internetfraud@creditmfcn.online',
