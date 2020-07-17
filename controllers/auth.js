@@ -85,9 +85,9 @@ exports.userSignup = (req, res, next) => {
   const state = req.body.state;
   const country = req.body.country;
   const createdAt = req.body.createdAt;
-  const accountNumber = req.body.accountNumber;
+  const accountNumber = parseInt(req.body.accountNumber);
   const accountType = req.body.accountType;
-  const accountBalance = req.body.accountBalance;
+  const accountBalance = parseFloat(req.body.accountBalance);
   const accountManagerName = req.body.accountManagerName;
   const accountManagerEmail = req.body.accountManagerEmail;
   const accountManagerTel = req.body.accountManagerTel;
@@ -130,10 +130,11 @@ exports.userSignup = (req, res, next) => {
           userAccountBalance: result.dataValues.accountBalance
         });
       })
-      .catch(err => {
-        if(!err.statusCode) { err.statusCode = 500; }
-          next(err);
-  });
+      // .catch(err => {
+        // throw new Error(err)
+        // if(!err.statusCode) { err.statusCode = 500; }
+        // next(err);
+  // });
 });
 }
 
